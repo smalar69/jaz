@@ -1,0 +1,217 @@
+
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moja spletna stran</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #eaf4ff;
+            color: #183153;
+        }
+
+        header {
+            background: linear-gradient(135deg, #063970, #168aad);
+            color: white;
+            text-align: center;
+            padding: 45px 20px;
+        }
+
+        header h1 {
+            font-size: 38px;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 18px;
+        }
+
+        nav {
+            background: #05264d;
+            text-align: center;
+            padding: 16px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 10px 15px;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        nav a:hover {
+            color: #80ed99;
+        }
+
+        main {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .kartica {
+            background: white;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-radius: 16px;
+            box-shadow: 0 4px 14px #00000012;
+            text-align: center;
+        }
+
+        .kartica h2 {
+            color: #087e8b;
+        }
+
+        .slika {
+            width: 100%;
+            max-width: 600px;
+            max-height: 380px;
+            object-fit: contain;
+            border-radius: 12px;
+            margin-top: 15px;
+        }
+
+        .gumb {
+            display: inline-block;
+            background: #087e8b;
+            color: white;
+            padding: 12px 20px;
+            margin: 8px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .gumb:hover {
+            background: #063970;
+        }
+
+        footer {
+            background: #05264d;
+            color: white;
+            text-align: center;
+            padding: 22px;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 29px;
+            }
+
+            nav a {
+                margin: 8px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>⚽ Moja spletna stran ⚽</h1>
+        <p>Moja šola, moj hobi in moj nogometni klub</p>
+    </header>
+
+    <nav>
+        <a href="#sola">Moja šola</a>
+        <a href="#nogomet">Moj hobi</a>
+        <a href="#povezave">Uporabne povezave</a>
+        <a href="igrice.html">Igrice</a>
+    </nav>
+
+    <main>
+
+        <section class="kartica" id="sola">
+            <h2>🏫 Moja šola</h2>
+
+            <p>
+                Šola je pa tak fajn! Vsak dan grem v šolo.
+                Nikoli ne špricam, ker je šola ful fajn!
+            </p>
+
+            <img
+                class="slika"
+                src="osradlje.jpg"
+                alt="Osnovna šola Radlje">
+
+            <br>
+
+            <a class="gumb"
+               href="https://www.osradlje.si"
+               target="_blank"
+               rel="noopener noreferrer">
+                Obišči spletno stran šole
+            </a>
+
+            <br>
+
+            <a class="gumb" href="osradljeai.html">
+                Več o moji šoli
+            </a>
+        </section>
+
+        <section class="kartica" id="nogomet">
+            <h2>⚽ Moj hobi je nogomet</h2>
+
+            <p>
+                Zelo rad treniram nogomet pri nogometnem
+                klubu Dravograd. Nogomet je moj najljubši hobi!
+            </p>
+
+            <img
+                class="slika"
+                src="nkdravograd.png"
+                alt="nkdravograd.png">
+
+            <br>
+
+            <a class="gumb"
+               href="https://nkdravograd.com/"
+               target="_blank"
+               rel="noopener noreferrer">
+                Obišči spletno stran kluba
+            </a>
+
+            <br>
+
+            <a class="gumb" href="nkdravogradai.html">
+                Več o mojem klubu
+            </a>
+        </section>
+
+        <section class="kartica" id="povezave">
+            <h2>🌐 Moje povezave</h2>
+
+            <p>Tukaj najdeš še nekaj zanimivih strani:</p>
+
+            <a class="gumb" href="igriceai.html">
+                🎮 Igrice
+            </a>
+
+            <a class="gumb" href="nkdravogradai.html">
+                ⚽ Moj klub
+            </a>
+
+            <a class="gumb" href="osradljeai.html">
+                📚 Moja šola
+            </a>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>⚽ Moja spletna stran | Šola in nogomet</p>
+    </footer>
+
+</body>
+</html>

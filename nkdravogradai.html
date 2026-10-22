@@ -1,0 +1,240 @@
+
+<!DOCTYPE html>
+<html lang="sl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Moj klub – NK Dravograd</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #071f16;
+            color: white;
+            line-height: 1.7;
+        }
+
+        header {
+            background: linear-gradient(135deg, #064e3b, #15803d);
+            text-align: center;
+            padding: 60px 20px 45px;
+            border-bottom: 5px solid #a3e635;
+        }
+
+        header h1 {
+            font-size: 42px;
+            margin: 15px 0;
+            text-shadow: 0 3px 10px #00000055;
+        }
+
+        header p {
+            font-size: 19px;
+            color: #dcfce7;
+        }
+
+        .nazaj {
+            position: absolute;
+            top: 18px;
+            right: 20px;
+        }
+
+        .nazaj img {
+            width: 75px;
+            transition: transform 0.3s;
+        }
+
+        .nazaj img:hover {
+            transform: scale(1.1);
+        }
+
+        nav {
+            background: #03150e;
+            padding: 15px;
+            text-align: center;
+        }
+
+        nav a {
+            display: inline-block;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 5px 15px;
+        }
+
+        nav a:hover {
+            color: #a3e635;
+        }
+
+        main {
+            max-width: 950px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        .kartica {
+            background: #102c20;
+            border: 1px solid #286443;
+            border-radius: 18px;
+            padding: 30px;
+            margin-bottom: 28px;
+            box-shadow: 0 8px 25px #00000025;
+        }
+
+        h2 {
+            color: #a3e635;
+            margin-top: 0;
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        .klubska-slika {
+            display: block;
+            width: 100%;
+            max-width: 420px;
+            max-height: 400px;
+            object-fit: contain;
+            margin: 25px auto;
+            border-radius: 15px;
+            transition: transform 0.3s;
+        }
+
+        .klubska-slika:hover {
+            transform: scale(1.03);
+        }
+
+        .letnica {
+            color: #bef264;
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        .gumb {
+            display: inline-block;
+            padding: 13px 23px;
+            background: #84cc16;
+            color: #10210d;
+            border-radius: 9px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 12px;
+            transition: background 0.3s, transform 0.3s;
+        }
+
+        .gumb:hover {
+            background: #bef264;
+            transform: translateY(-3px);
+        }
+
+        footer {
+            text-align: center;
+            background: #03150e;
+            color: #d1fae5;
+            padding: 24px 15px;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 31px;
+            }
+
+            .kartica {
+                padding: 22px;
+            }
+
+            .nazaj img {
+                width: 58px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <a class="nazaj" href="indexai.html" title="Nazaj na začetno stran">
+        <img src="gumb-nazaj.png" alt="Gumb nazaj">
+    </a>
+
+    <header>
+        <h1>⚽ NK DRAVOGRAD ⚽</h1>
+        <p>Moj klub, moja strast, moj nogomet!</p>
+    </header>
+
+    <nav>
+        <a href="#klub">O klubu</a>
+        <a href="#zgodovina">Zgodovina</a>
+        <a href="#povezava">Uradna spletna stran</a>
+    </nav>
+
+    <main>
+
+        <section class="kartica center" id="klub">
+            <h2>💚 Moj nogometni klub</h2>
+
+            <p>
+                Dobrodošli na spletni strani mojega nogometnega kluba,
+                NK Dravograd!
+            </p>
+
+            <img
+                class="klubska-slika"
+                src="nkdravograd.png"
+                alt="NK Dravograd">
+
+            <p>
+                Nogomet je več kot igra. Je ekipni duh, prijateljstvo,
+                vztrajnost in borba za vsak gol!
+            </p>
+        </section>
+
+        <section class="kartica" id="zgodovina">
+            <h2>📜 Zgodovina kluba</h2>
+
+            <p>
+                Nogometni klub Dravograd ima bogato zgodovino,
+                ki sega v leto 1948. Klub je skozi leta dosegel
+                pomembne uspehe, vključno z uvrstitvijo v
+                1. slovensko nogometno ligo leta 1999.
+            </p>
+
+            <div class="center">
+                <p>Naša zgodovina se začne leta</p>
+                <div class="letnica">1948</div>
+                <p>Pomemben mejnik je bila uvrstitev v prvo ligo leta 1999.</p>
+            </div>
+        </section>
+
+        <section class="kartica center" id="povezava">
+            <h2>🌐 Obišči naš klub na spletu</h2>
+
+            <p>
+                Za več informacij, novice in druge vsebine obišči
+                uradno spletno stran NK Dravograd.
+            </p>
+
+            <a
+                class="gumb"
+                href="https://nkdravograd.com"
+                target="_blank"
+                rel="noopener noreferrer">
+                Obišči NK Dravograd →
+            </a>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>⚽ NK Dravograd | Nogometna strast od leta 1948</p>
+    </footer>
+
+</body>
+</html>

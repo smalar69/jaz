@@ -1,0 +1,183 @@
+
+<!DOCTYPE html>
+<html lang="sl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Moje igrice 🎮</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            color: white;
+            background: linear-gradient(135deg, #141e46, #533483, #0f3460);
+            text-align: center;
+        }
+
+        header {
+            padding: 25px 20px 10px;
+        }
+
+        .nazaj {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        .nazaj img {
+            width: 85px;
+            transition: transform 0.3s;
+        }
+
+        .nazaj img:hover {
+            transform: scale(1.12);
+        }
+
+        h1 {
+            font-size: 42px;
+            margin-top: 65px;
+            margin-bottom: 12px;
+            text-shadow: 0 4px 12px #00000066;
+        }
+
+        .uvod {
+            font-size: 18px;
+            color: #e0e7ff;
+            margin-bottom: 35px;
+        }
+
+        .igrice {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 25px;
+            padding: 20px;
+        }
+
+        .kartica {
+            width: 290px;
+            padding: 30px 22px;
+            background: #ffffff16;
+            border: 1px solid #ffffff35;
+            border-radius: 22px;
+            box-shadow: 0 10px 30px #00000030;
+            backdrop-filter: blur(8px);
+            transition: transform 0.3s, background 0.3s;
+        }
+
+        .kartica:hover {
+            transform: translateY(-9px);
+            background: #ffffff25;
+        }
+
+        .ikona {
+            font-size: 65px;
+            margin-bottom: 12px;
+        }
+
+        h2 {
+            font-size: 23px;
+            margin-bottom: 25px;
+        }
+
+        .gumb {
+            display: inline-block;
+            padding: 13px 22px;
+            color: white;
+            background: linear-gradient(90deg, #ff512f, #dd2476);
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .gumb:hover {
+            transform: scale(1.06);
+            box-shadow: 0 5px 18px #ff512f66;
+        }
+
+        .drugi {
+            background: linear-gradient(90deg, #11998e, #38ef7d);
+            color: #102b36;
+        }
+
+        .drugi:hover {
+            box-shadow: 0 5px 18px #38ef7d66;
+        }
+
+        footer {
+            margin-top: 30px;
+            padding: 22px;
+            color: #d8ddf0;
+            font-size: 14px;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 32px;
+                margin-top: 100px;
+            }
+
+            .nazaj img {
+                width: 65px;
+            }
+
+            .kartica {
+                width: 100%;
+                max-width: 340px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <a class="nazaj" href="indexai.html" title="Nazaj na začetno stran">
+        <img src="gumb-nazaj.png" alt="Gumb nazaj">
+    </a>
+
+    <header>
+        <h1>🎮 Svet igric 🎮</h1>
+        <p class="uvod">
+            Dobrodošel! Izberi svojo najljubšo igrico in se zabavaj.
+        </p>
+    </header>
+
+    <main class="igrice">
+
+        <section class="kartica">
+            <div class="ikona">⚽</div>
+            <h2>Penalty Shooter</h2>
+            <p>Preizkusi svoje nogometne spretnosti in zadeni gol!</p>
+            <br>
+            <a class="gumb" href="penalty_shooter.html">
+                Igraj zdaj!
+            </a>
+        </section>
+
+        <section class="kartica">
+            <div class="ikona">⭐</div>
+            <h2>Lov na zvezdice</h2>
+            <p>Podaj se na pustolovščino in poskusi zbrati čim več zvezdic!</p>
+            <br>
+            <a class="gumb drugi" href="igrica.html">
+                Igraj zdaj!
+            </a>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>🎮 Moja igralna stran | Izberi igro in se zabavaj!</p>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nogometni Enajstmetrovke - Penalty Shooter</title>
+    <!-- Tailwind CSS for modern sleek UI -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap');
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #f8fafc;
+            overflow-x: hidden;
+        }
+        .stadium-bg {
+            background: radial-gradient(circle at center, #1e3a8a 0%, #0f172a 70%);
+        }
+        /* Custom bounce animation for notifications */
+        @keyframes popIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            70% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .animate-pop {
+            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+    </style>
+</head>
+<body 
+
+class="min-h-screen flex flex-col justify-between select-none">
+<a href="igriceai.html"><img src="gumb-nazaj.png" align=right width="100"></a>
+<br> 
+
+    <header class="w-full py-4 px-6 bg-slate-900/80 backdrop-blur border-b border-slate-800 flex justify-between items-center shadow-lg">
+        <div class="flex items-center space-x-3">
+            <div class="bg-emerald-600 text-white p-2.5 rounded-xl shadow-md flex items-center justify-center">
+                <i class="fa-solid fa-futbol text-xl animate-spin" style="animation-duration: 8s;"></i>
+            </div>
+            <div>
+                <h1 class="text-xl font-bold tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">ENAJSTMETROVKE</h1>
+                <p class="text-xs text-slate-400">Zabij gol in postani prvak!</p>
+            </div>
+        </div>
+        <div class="flex items-center space-x-4">
+            <div class="bg-slate-800/80 border border-slate-700 px-4 py-2 rounded-xl text-center shadow-inner">
+                <span class="text-xs uppercase text-slate-400 block font-semibold">Rekord</span>
+                <span id="highScoreVal" class="text-emerald-400 font-extrabold text-lg">0</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow flex flex-col items-center justify-center p-4 max-w-4xl mx-auto w-full">
+        
+        <!-- Scoreboard Bar -->
+        <div class="w-full bg-slate-800/90 border border-slate-700 rounded-2xl p-4 mb-4 shadow-xl flex flex-wrap justify-between items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <div class="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></div>
+                <span class="text-sm font-semibold uppercase tracking-wider text-slate-300" id="roundIndicator">Runda: 1 / 5</span>
+            </div>
+            <div class="flex items-center space-x-6">
+                <div class="text-center">
+                    <span class="text-xs text-slate-400 block font-bold">IGRALEC</span>
+                    <span id="playerScore" class="text-2xl font-black text-emerald-400">0</span>
+                </div>
+                <span class="text-slate-500 text-xl font-bold">:</span>
+                <div class="text-center">
+                    <span class="text-xs text-slate-400 block font-bold">VRATAR</span>
+                    <span id="aiScore" class="text-2xl font-black text-cyan-400">0</span>
+                </div>
+            </div>
+            <div class="flex items-center space-x-2" id="roundDots">
+                <!-- Round indicator dots will be injected here -->
+            </div>
+        </div>
+
+        <!-- Canvas Game Container -->
+        <div class="relative w-full aspect-[4/3] max-h-[500px] bg-slate-950 rounded-2xl overflow-hidden border-2 border-slate-700 shadow-2xl stadium-bg">
+            <canvas id="gameCanvas" class="w-full h-full cursor-crosshair"></canvas>
+            
+            <!-- Overlay Feedback Message -->
+            <div id="feedbackOverlay" class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-0 transition-opacity duration-300">
+                <div id="feedbackText" class="px-8 py-4 rounded-2xl text-3xl md:text-5xl font-black uppercase tracking-wider shadow-2xl backdrop-blur-md transform scale-90 transition-transform">
+                    GOL!
+                </div>
+            </div>
+
+            <!-- Start / Game Over Screen Overlay -->
+            <div id="menuOverlay" class="absolute inset-0 bg-slate-900/90 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center z-10 transition-opacity">
+                <div class="bg-emerald-500/10 p-4 rounded-full border border-emerald-500/30 mb-4 text-emerald-400 text-5xl">
+                    <i class="fa-solid fa-futbol"></i>
+                </div>
+                <h2 id="menuTitle" class="text-3xl md:text-4xl font-extrabold text-white mb-2">STRELJSKI DVBOJ</h2>
+                <p id="menuDesc" class="text-slate-300 max-w-md mb-6 text-sm md:text-base">Zabij 5 enajstmetrovk v mrežo. Klikni ali tapni na gol, kamor želiš ustreliti žogo!</p>
+                <button id="startBtn" class="bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-slate-950 font-extxl font-bold text-lg px-8 py-4 rounded-xl shadow-lg transform hover:-translate-y-0.5 active:translate-y-0 transition cursor-pointer flex items-center space-x-3">
+                    <i class="fa-solid fa-play"></i>
+                    <span>ZAČNI IGRO</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Instructions / Helper Bar -->
+        <div class="mt-4 text-center text-xs md:text-sm text-slate-400 flex items-center justify-center space-x-2 bg-slate-900/50 px-4 py-2 rounded-xl border border-slate-800">
+            <i class="fa-solid fa-circle-info text-cyan-400"></i>
+            <span><strong>Navodila:</strong> S kursorjem kliknite ali tapnite poljubno mesto v golu za strel. Vratar se bo poskusil ubraniti!</span>
+        </div>
+    </main>
+
+    <footer class="w-full py-3 text-center text-xs text-slate-500 border-t border-slate-800/80">
+        Nogometni Enajstmetrovke &bull; Izdelano z HTML5 Canvas & Tailwind CSS
+    </footer>
+
+    <script>
+        // Audio Synthesizer using Web Audio API
+        class SoundFX {
+            constructor() {
+                this.ctx = null;
+            }
+            init() {
+                if (!this.ctx) {
+                    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+            }
+            playKick() {
+                this.init();
+                if (!this.ctx) return;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(120, this.ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(30, this.ctx.currentTime + 0.15);
+                gain.gain.setValueAtTime(0.8, this.ctx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 0.15);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start();
+                osc.stop(this.ctx.currentTime + 0.15);
+            }
+            playGoal() {
+                this.init();
+                if (!this.ctx) return;
+                const now = this.ctx.currentTime;
+                [261.63, 329.63, 392.00, 523.25].forEach((freq, i) => {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(freq, now + i * 0.1);
+                    gain.gain.setValueAtTime(0.3, now + i * 0.1);
+                    gain.gain.linearRampToValueAtTime(0.01, now + i * 0.1 + 0.3);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start(now + i * 0.1);
+                    osc.stop(now + i * 0.1 + 0.3);
+                });
+            }
+            playSave() {
+                this.init();
+                if (!this.ctx) return;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(150, this.ctx.currentTime);
+                osc.frequency.linearRampToValueAtTime(80, this.ctx.currentTime + 0.2);
+                gain.gain.setValueAtTime(0.4, this.ctx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 0.2);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start();
+                osc.stop(this.ctx.currentTime + 0.2);
+            }
+            playWhistle() {
+                this.init();
+                if (!this.ctx) return;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(2400, this.ctx.currentTime);
+                osc.frequency.setValueAtTime(2700, this.ctx.currentTime + 0.1);
+                gain.gain.setValueAtTime(0.2, this.ctx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 0.25);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start();
+                osc.stop(this.ctx.currentTime + 0.25);
+            }
+        }
+
+        const soundFX = new SoundFX();
+
+        // Game State & Canvas setup
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let gameState = 'MENU'; // MENU, AIMING, SHOOTING, RESULT, GAMEOVER
+        let score = { player: 0, ai: 0 };
+        let round = 1;
+        const maxRounds = 5;
+        let history = []; // 'goal', 'miss', 'save'
+        let highScore = localStorage.getItem('penalty_highscore') || 0;
+        document.getElementById('highScoreVal').innerText = highScore;
+
+        // Canvas dimensions (logical)
+        const LOGICAL_WIDTH = 800;
+        const LOGICAL_HEIGHT = 600;
+
+        function resizeCanvas() {
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = LOGICAL_WIDTH;
+            canvas.height = LOGICAL_HEIGHT;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        // Goal dimensions in logical coordinates
+        const goalRect = {
+            x: 200,
+            y: 120,
+            width: 400,
+            height: 220
+        };
+
+        // Ball initial position (penalty spot)
+        const penaltySpot = {
+            x: LOGICAL_WIDTH / 2,
+            y: LOGICAL_HEIGHT - 90
+        };
+
+        let ball = {
+            x: penaltySpot.x,
+            y: penaltySpot.y,
+            radius: 14,
+            scale: 1,
+            targetX: penaltySpot.x,
+            targetY: penaltySpot.y,
+            progress: 0,
+            speed: 0.04
+        };
+
+        // Goalkeeper state
+        let goalkeeper = {
+            x: LOGICAL_WIDTH / 2,
+            y: goalRect.y + goalRect.height - 35,
+            width: 60,
+            height: 90,
+            targetX: LOGICAL_WIDTH / 2,
+            diveState: 'idle' // idle, diving, saving
+        };
+
+        // Aim marker
+        let aim = {
+            x: LOGICAL_WIDTH / 2,
+            y: goalRect.y + goalRect.height / 2,
+            visible: false
+        };
+
+        // Particles for celebration
+        let particles = [];
+
+        function initRoundDots() {
+            const container = document.getElementById('roundDots');
+            container.innerHTML = '';
+            for (let i = 1; i <= maxRounds; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'w-4 h-4 rounded-full border border-slate-600 bg-slate-800 flex items-center justify-center text-[9px] font-bold text-slate-400';
+                dot.id = `dot-${i}`;
+                dot.innerText = i;
+                container.appendChild(dot);
+            }
+        }
+        initRoundDots();
+
+        function updateRoundDotsUI() {
+            for (let i = 1; i <= maxRounds; i++) {
+                const dot = document.getElementById(`dot-${i}`);
+                if (i < round) {
+                    if (history[i-1] === 'goal') {
+                        dot.className = 'w-4 h-4 rounded-full bg-emerald-500 text-slate-950 flex items-center justify-center text-[10px] font-bold shadow';
+                    } else {
+                        dot.className = 'w-4 h-4 rounded-full bg-rose-500 text-white flex items-center justify-center text-[10px] font-bold shadow';
+                    }
+                } else if (i === round) {
+                    dot.className = 'w-4 h-4 rounded-full border-2 border-cyan-400 bg-slate-800 text-cyan-300 flex items-center justify-center text-[10px] font-bold animate-pulse';
+                } else {
+                    dot.className = 'w-4 h-4 rounded-full border border-slate-600 bg-slate-800 text-slate-500 flex items-center justify-center text-[10px] font-bold';
+                }
+            }
+            document.getElementById('roundIndicator').innerText = `Runda: ${round} / ${maxRounds}`;
+            document.getElementById('playerScore').innerText = score.player;
+            document.getElementById('aiScore').innerText = score.ai;
+        }
+
+        // Mouse and Touch Controls for Aiming
+        function getCanvasCoordinates(e) {
+            const rect = canvas.getBoundingClientRect();
+            const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+            const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+            const scaleX = LOGICAL_WIDTH / rect.width;
+            const scaleY = LOGICAL_HEIGHT / rect.height;
+            return {
+                x: (clientX - rect.left) * scaleX,
+                y: (clientY - rect.top) * scaleY
+            };
+        }
+
+        canvas.addEventListener('mousemove', (e) => {
+            if (gameState !== 'AIMING') return;
+            const pos = getCanvasCoordinates(e);
+            aim.x = Math.max(goalRect.x + 20, Math.min(goalRect.x + goalRect.width - 20, pos.x));
+            aim.y = Math.max(goalRect.y + 20, Math.min(goalRect.y + goalRect.height - 20, pos.y));
+            aim.visible = true;
+        });
+
+        canvas.addEventListener('mouseleave', () => {
+            aim.visible = false;
+        });
+
+        canvas.addEventListener('click', (e) => {
+            if (gameState !== 'AIMING') return;
+            const pos = getCanvasCoordinates(e);
+            shoot(pos.x, pos.y);
+        });
+
+        // Touch support
+        canvas.addEventListener('touchstart', (e) => {
+            if (gameState !== 'AIMING') return;
+            e.preventDefault();
+            const pos = getCanvasCoordinates(e);
+            aim.x = Math.max(goalRect.x + 20, Math.min(goalRect.x + goalRect.width - 20, pos.x));
+            aim.y = Math.max(goalRect.y + 20, Math.min(goalRect.y + goalRect.height - 20, pos.y));
+            aim.visible = true;
+            shoot(aim.x, aim.y);
+        }, { passive: false });
+
+        function shoot(targetX, targetY) {
+            soundFX.playWhistle();
+            soundFX.playKick();
+            gameState = 'SHOOTING';
+            aim.visible = false;
+
+            ball.startX = penaltySpot.x;
+            ball.startY = penaltySpot.y;
+            ball.targetX = targetX;
+            ball.targetY = targetY;
+            ball.progress = 0;
+
+            // Goalkeeper AI decision based on target
+            // Goalkeeper dives towards target with some probability of missing or guessing correctly
+            const isTargetLeft = targetX < LOGICAL_WIDTH / 2;
+            const isTargetTop = targetY < goalRect.y + goalRect.height / 2;
+            
+            // AI intelligence: 70% chance to dive correctly based on recent patterns or aim
+            const aiGuessedCorrectly = Math.random() < 0.72;
+            if (aiGuessedCorrectly) {
+                goalkeeper.targetX = isTargetLeft ? goalRect.x + 70 : goalRect.x + goalRect.width - 70;
+                goalkeeper.targetY = isTargetTop ? goalRect.y + 40 : goalRect.y + goalRect.height - 40;
+            } else {
+                // Dive wrong way or center
+                goalkeeper.targetX = isTargetLeft ? goalRect.x + goalRect.width - 60 : goalRect.x + 60;
+                goalkeeper.targetY = goalRect.y + goalRect.height - 40;
+            }
+        }
+
+        function triggerFeedback(text, isGoal) {
+            const overlay = document.getElementById('feedbackOverlay');
+            const feedbackText = document.getElementById('feedbackText');
+            feedbackText.innerText = text;
+            if (isGoal) {
+                feedbackText.className = "px-8 py-4 rounded-2xl text-3xl md:text-5xl font-black uppercase tracking-wider shadow-2xl backdrop-blur-md bg-emerald-500/90 text-slate-950 border-2 border-emerald-300 animate-pop";
+                soundFX.playGoal();
+                createConfetti();
+            } else {
+                feedbackText.className = "px-8 py-4 rounded-2xl text-3xl md:text-5xl font-black uppercase tracking-wider shadow-2xl backdrop-blur-md bg-rose-600/90 text-white border-2 border-rose-300 animate-pop";
+                soundFX.playSave();
+            }
+            overlay.style.opacity = '1';
+            setTimeout(() => {
+                overlay.style.opacity = '0';
+            }, 1400);
+        }
+
+        function createConfetti() {
+            particles = [];
+            for (let i = 0; i < 70; i++) {
+                particles.push({
+                    x: LOGICAL_WIDTH / 2,
+                    y: LOGICAL_HEIGHT / 2,
+                    vx: (Math.random() - 0.5) * 14,
+                    vy: (Math.random() - 0.7) * 14,
+                    color: ['#10b981', '#06b6d4', '#f59e0b', '#ec4899', '#ffffff'][Math.floor(Math.random() * 5)],
+                    size: Math.random() * 8 + 4,
+                    life: 60
+                });
+            }
+        }
+
+        // Game Loop Update & Render
+        function update() {
+            if (gameState === 'SHOOTING') {
+                ball.progress += ball.speed;
+                if (ball.progress > 1) ball.progress = 1;
+
+                // Ease out quad for smooth ball trajectory
+                const t = ball.progress;
+                ball.x = ball.startX + (ball.targetX - ball.startX) * t;
+                ball.y = ball.startY + (ball.targetY - ball.startY) * t;
+                ball.scale = 1 - 0.6 * t; // Ball shrinks as it moves towards goal
+
+                // Move goalkeeper towards target dive position
+                goalkeeper.x += (goalkeeper.targetX - goalkeeper.x) * 0.15;
+                goalkeeper.y += (goalkeeper.targetY - goalkeeper.y) * 0.15;
+
+                // Check collision at destination
+                if (ball.progress === 1) {
+                    // Check if goalkeeper saves the ball
+                    const gkHitBox = {
+                        x: goalkeeper.x - goalkeeper.width / 2,
+                        y: goalkeeper.y - goalkeeper.height / 2,
+                        width: goalkeeper.width,
+                        height: goalkeeper.height
+                    };
+
+                    const saved = (
+                        ball.x >= gkHitBox.x &&
+                        ball.x <= gkHitBox.x + gkHitBox.width &&
+                        ball.y >= gkHitBox.y &&
+                        ball.y <= gkHitBox.y + gkHitBox.height
+                    );
+
+                    // Also check if ball missed the goal frame
+                    const missedGoal = (
+                        ball.x < goalRect.x ||
+                        ball.x > goalRect.x + goalRect.width ||
+                        ball.y < goalRect.y ||
+                        ball.y > goalRect.y + goalRect.height
+                    );
+
+                    if (missedGoal) {
+                        history.push('miss');
+                        score.ai++;
+                        triggerFeedback('ZREŠENO!', false);
+                    } else if (saved) {
+                        history.push('save');
+                        score.ai++;
+                        triggerFeedback('OBRAMBA!', false);
+                    } else {
+                        history.push('goal');
+                        score.player++;
+                        triggerFeedback('GOL!', true);
+                    }
+
+                    updateRoundDotsUI();
+
+                    setTimeout(() => {
+                        if (round >= maxRounds) {
+                            endGame();
+                        } else {
+                            round++;
+                            resetShot();
+                            gameState = 'AIMING';
+                            updateRoundDotsUI();
+                        }
+                    }, 1600);
+
+                    gameState = 'RESULT';
+                }
+            }
+
+            // Update confetti particles
+            particles.forEach(p => {
+                p.x += p.vx;
+                p.y += p.vy;
+                p.vy += 0.4; // gravity
+                p.life--;
+            });
+            particles = particles.filter(p => p.life > 0);
+        }
+
+        function resetShot() {
+            ball.x = penaltySpot.x;
+            ball.y = penaltySpot.y;
+            ball.scale = 1;
+            ball.progress = 0;
+            goalkeeper.x = LOGICAL_WIDTH / 2;
+            goalkeeper.y = goalRect.y + goalRect.height - 35;
+            goalkeeper.targetX = LOGICAL_WIDTH / 2;
+            goalkeeper.targetY = goalRect.y + goalRect.height - 35;
+        }
+
+        function render() {
+            ctx.clearRect(0, 0, LOGICAL_WIDTH, LOGICAL_HEIGHT);
+
+            // 1. Draw Field / Pitch Gradient & Markings
+            const gradient = ctx.createLinearGradient(0, 0, 0, LOGICAL_HEIGHT);
+            gradient.addColorStop(0, '#022c22');
+            gradient.addColorStop(0.5, '#065f46');
+            gradient.addColorStop(1, '#047857');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, LOGICAL_WIDTH, LOGICAL_HEIGHT);
+
+            // Pitch pattern lines
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(0, goalRect.y + goalRect.height + 40);
+            ctx.lineTo(LOGICAL_WIDTH, goalRect.y + goalRect.height + 40);
+            ctx.stroke();
+
+            // Penalty box
+            ctx.strokeRect(goalRect.x - 60, goalRect.y + goalRect.height, goalRect.width + 120, 180);
+
+            // Penalty spot
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+            ctx.beginPath();
+            ctx.arc(penaltySpot.x, penaltySpot.y, 5, 0, Math.PI * 2);
+            ctx.fill();
+
+            // 2. Draw Goal Net & Posts
+            // Net mesh pattern
+            ctx.fillStyle = 'rgba(15, 23, 42, 0.4)';
+            ctx.fillRect(goalRect.x, goalRect.y, goalRect.width, goalRect.height);
+
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.25)';
+            ctx.lineWidth = 1.5;
+            const stepX = 20;
+            const stepY = 20;
+            for (let x = goalRect.x; x <= goalRect.x + goalRect.width; x += stepX) {
+                ctx.beginPath();
+                ctx.moveTo(x, goalRect.y);
+                ctx.lineTo(x, goalRect.y + goalRect.height);
+                ctx.stroke();
+            }
+            for (let y = goalRect.y; y <= goalRect.y + goalRect.height; y += stepY) {
+                ctx.beginPath();
+                ctx.moveTo(goalRect.x, y);
+                ctx.lineTo(goalRect.x + goalRect.width, y);
+                ctx.stroke();
+            }
+
+            // 3. Draw Goalkeeper
+            ctx.save();
+            ctx.shadowColor = 'rgba(0,0,0,0.5)';
+            ctx.shadowBlur = 10;
+            // Goalkeeper body (jersey)
+            ctx.fillStyle = '#06b6d4';
+            ctx.fillRect(goalkeeper.x - goalkeeper.width / 2, goalkeeper.y - goalkeeper.height / 2, goalkeeper.width, goalkeeper.height);
+            // Goalkeeper head
+            ctx.fillStyle = '#fbcfe8';
+            ctx.beginPath();
+            ctx.arc(goalkeeper.x, goalkeeper.y - goalkeeper.height / 2 - 12, 14, 0, Math.PI * 2);
+            ctx.fill();
+            // Goalkeeper gloves
+            ctx.fillStyle = '#ffffff';
+            ctx.beginPath();
+            ctx.arc(goalkeeper.x - goalkeeper.width / 2 - 6, goalkeeper.y, 10, 0, Math.PI * 2);
+            ctx.arc(goalkeeper.x + goalkeeper.width / 2 + 6, goalkeeper.y, 10, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+
+            // 4. Draw Goal Frame (Posts & Crossbar)
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = 10;
+            ctx.lineCap = 'round';
+            ctx.beginPath();
+            // Left post
+            ctx.moveTo(goalRect.x, goalRect.y + goalRect.height);
+            ctx.lineTo(goalRect.x, goalRect.y);
+            // Crossbar
+            ctx.lineTo(goalRect.x + goalRect.width, goalRect.y);
+            // Right post
+            ctx.lineTo(goalRect.x + goalRect.width, goalRect.y + goalRect.height);
+            ctx.stroke();
+
+            // 5. Draw Ball
+            ctx.save();
+            ctx.shadowColor = 'rgba(0,0,0,0.4)';
+            ctx.shadowBlur = 12;
+            const r = ball.radius * ball.scale;
+            ctx.fillStyle = '#ffffff';
+            ctx.beginPath();
+            ctx.arc(ball.x, ball.y, Math.max(r, 2), 0, Math.PI * 2);
+            ctx.fill();
+            ctx.strokeStyle = '#0f172a';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Simple pentagon pattern on ball
+            ctx.fillStyle = '#0f172a';
+            ctx.beginPath();
+            ctx.arc(ball.x, ball.y, Math.max(r * 0.3, 1), 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+
+            // 6. Draw Aim Target Crosshair
+            if (gameState === 'AIMING' && aim.visible) {
+                ctx.strokeStyle = '#38bdf8';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.arc(aim.x, aim.y, 20, 0, Math.PI * 2);
+                ctx.stroke();
+
+                ctx.fillStyle = '#38bdf8';
+                ctx.beginPath();
+                ctx.arc(aim.x, aim.y, 4, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            // 7. Draw Confetti Particles
+            particles.forEach(p => {
+                ctx.fillStyle = p.color;
+                ctx.fillRect(p.x, p.y, p.size, p.size);
+            });
+        }
+
+        function gameLoop() {
+            update();
+            render();
+            requestAnimationFrame(gameLoop);
+        }
+
+        // Start / End Game Logic
+        function startGame() {
+            score = { player: 0, ai: 0 };
+            round = 1;
+            history = [];
+            resetShot();
+            updateRoundDotsUI();
+            
+            document.getElementById('menuOverlay').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('menuOverlay').style.display = 'none';
+                gameState = 'AIMING';
+            }, 300);
+        }
+
+        function endGame() {
+            gameState = 'GAMEOVER';
+            const menuOverlay = document.getElementById('menuOverlay');
+            const menuTitle = document.getElementById('menuTitle');
+            const menuDesc = document.getElementById('menuDesc');
+            const startBtn = document.getElementById('startBtn');
+
+            menuOverlay.style.display = 'flex';
+            setTimeout(() => {
+                menuOverlay.style.opacity = '1';
+            }, 10);
+
+            if (score.player > score.ai) {
+                menuTitle.innerText = 'ZMAGA!';
+                menuDesc.innerText = `Čestitke! Zabil si ${score.player} od ${maxRounds} golov in premagal vratarja!`;
+                soundFX.playGoal();
+            } else if (score.player === score.ai) {
+                menuTitle.innerText = 'NEODLOČENO!';
+                menuDesc.innerText = `Napet boj! Končni rezultat je ${score.player} : ${score.ai}. Poskusi ponovno za čisto zmago!`;
+            } else {
+                menuTitle.innerText = 'PORAZ!';
+                menuDesc.innerText = `Vratar je bil predober. Rezultat: ${score.player} : ${score.ai}. Poskusi znova!`;
+            }
+
+            if (score.player > highScore) {
+                highScore = score.player;
+                localStorage.setItem('penalty_highscore', highScore);
+                document.getElementById('highScoreVal').innerText = highScore;
+                menuDesc.innerText += ' 🎉 Nov rekord!';
+            }
+
+            startBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i><span>IGRAJ PONOVNO</span>';
+        }
+
+        document.getElementById('startBtn').addEventListener('click', startGame);
+
+        // Initialize loop
+        requestAnimationFrame(gameLoop);
+    </script>
+</body>
+</html>

@@ -1,0 +1,358 @@
+
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+<a href="igriceai.html"><img src="gumb-nazaj.png" align=right width="100"></a>
+<br>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lov na zvezdice</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #10102f, #302060);
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 15px;
+    }
+
+    h1 { margin: 0 0 8px; color: #ffe66d; }
+    p { margin: 5px 0 15px; color: #ddd; }
+
+    .info {
+      display: flex;
+      justify-content: space-around;
+      gap: 20px;
+      width: min(100%, 420px);
+      margin-bottom: 10px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    canvas {
+      width: min(100%, 420px);
+      height: auto;
+      border: 3px solid #8275ff;
+      border-radius: 14px;
+      background: #090d28;
+      box-shadow: 0 0 30px #6554ff55;
+      touch-action: none;
+    }
+
+    button {
+      border: 0;
+      border-radius: 12px;
+      padding: 12px 22px;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+      color: #171333;
+      background: #ffe66d;
+    }
+
+    #start { margin: 14px 0 8px; }
+
+    .controls {
+      display: flex;
+      gap: 35px;
+      margin-top: 10px;
+    }
+
+    .controls button {
+      width: 85px;
+      font-size: 26px;
+      background: #8275ff;
+      color: white;
+      touch-action: none;
+      user-select: none;
+    }
+
+    #message {
+      min-height: 24px;
+      color: #ffe66d;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>⭐ Lov na zvezdice ⭐</h1>
+  <p>Ujemi zvezdice in se izogibaj bombam!</p>
+
+  <div class="info">
+    <span>Točke: <span id="score">0</span></span>
+    <span>Življenja: <span id="lives">❤️❤️❤️</span></span>
+  </div>
+
+  <canvas id="game" width="420" height="520"></canvas>
+
+  <button id="start">▶ Začni igro</button>
+  <div id="message">Pritisni »Začni igro«!</div>
+
+  <div class="controls">
+    <button id="left" aria-label="Levo">⬅️</button>
+    <button id="right" aria-label="Desno">➡️</button>
+  </div>
+
+  <p>Tipke: ← → ali A / D</p>
+
+  <script>
+    const canvas = document.getElementById("game");
+    const ctx = canvas.getContext("2d");
+    const scoreText = document.getElementById("score");
+    const livesText = document.getElementById("lives");
+    const message = document.getElementById("message");
+    const startButton = document.getElementById("start");
+
+    const W = canvas.width;
+    const H = canvas.height;
+
+    let player, objects, score, lives, running;
+    let keys = {};
+    let lastTime = 0;
+    let spawnTimer = 0;
+    let animationId = null;
+    let best = Number(localStorage.getItem("zvezdiceBest") || 0);
+
+    const stars = Array.from({ length: 65 }, () => ({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      size: Math.random() * 2 + 1
+    }));
+
+    function resetGame() {
+      player = { x: W / 2 - 28, y: H - 65, w: 56, h: 35, speed: 310 };
+      objects = [];
+      score = 0;
+      lives = 3;
+      running = true;
+      spawnTimer = 0;
+      lastTime = 0;
+      scoreText.textContent = score;
+      livesText.textContent = "❤️❤️❤️";
+      message.textContent = "Ujemi čim več zvezdic!";
+      startButton.textContent = "↻ Začni znova";
+
+      if (animationId !== null) cancelAnimationFrame(animationId);
+      animationId = requestAnimationFrame(loop);
+    }
+
+    function spawnObject() {
+      const bomb = Math.random() < 0.23;
+      objects.push({
+        x: 18 + Math.random() * (W - 36),
+        y: -25,
+        size: bomb ? 17 : 15,
+        speed: 120 + Math.random() * 100 + score * 1.5,
+        bomb,
+        rotation: 0
+      });
+    }
+
+    function drawBackground() {
+      ctx.fillStyle = "#090d28";
+      ctx.fillRect(0, 0, W, H);
+
+      ctx.fillStyle = "white";
+      for (const s of stars) {
+        ctx.globalAlpha = 0.4 + Math.sin(Date.now() / 400 + s.x) * 0.3;
+        ctx.fillRect(s.x, s.y, s.size, s.size);
+      }
+      ctx.globalAlpha = 1;
+    }
+
+    function drawPlayer() {
+      // Svetleča košara
+      ctx.shadowColor = "#53e8ff";
+      ctx.shadowBlur = 18;
+      ctx.fillStyle = "#53e8ff";
+      ctx.beginPath();
+      ctx.moveTo(player.x, player.y);
+      ctx.lineTo(player.x + player.w, player.y);
+      ctx.lineTo(player.x + player.w - 10, player.y + player.h);
+      ctx.lineTo(player.x + 10, player.y + player.h);
+      ctx.closePath();
+      ctx.fill();
+      ctx.shadowBlur = 0;
+
+      ctx.fillStyle = "#153b70";
+      ctx.fillRect(player.x + 8, player.y + 5, player.w - 16, 5);
+
+      ctx.font = "21px Arial";
+      ctx.textAlign = "center";
+      ctx.fillText("🧺", player.x + player.w / 2, player.y + 27);
+    }
+
+    function drawObjects() {
+      for (const o of objects) {
+        ctx.save();
+        ctx.translate(o.x, o.y);
+        ctx.rotate(o.rotation);
+        ctx.font = `${o.size * 2}px Arial`;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(o.bomb ? "💣" : "⭐", 0, 0);
+        ctx.restore();
+      }
+    }
+
+    function update(dt) {
+      if (keys.ArrowLeft || keys.a || keys.A) {
+        player.x -= player.speed * dt;
+      }
+      if (keys.ArrowRight || keys.d || keys.D) {
+        player.x += player.speed * dt;
+      }
+
+      player.x = Math.max(0, Math.min(W - player.w, player.x));
+
+      spawnTimer += dt;
+      const interval = Math.max(0.28, 0.8 - score * 0.008);
+
+      if (spawnTimer >= interval) {
+        spawnTimer = 0;
+        spawnObject();
+      }
+
+      for (const o of objects) {
+        o.y += o.speed * dt;
+        o.rotation += dt * 2;
+
+        const hit =
+          o.x + o.size > player.x &&
+          o.x - o.size < player.x + player.w &&
+          o.y + o.size > player.y &&
+          o.y - o.size < player.y + player.h;
+
+        if (hit && !o.caught) {
+          o.caught = true;
+
+          if (o.bomb) {
+            lives--;
+            livesText.textContent =
+              "❤️".repeat(lives) + "🖤".repeat(3 - lives);
+            message.textContent = "💥 Ojoj! Ujel si bombo!";
+          } else {
+            score += 10;
+            scoreText.textContent = score;
+            message.textContent = "⭐ Odlično! +10 točk";
+          }
+        }
+      }
+
+      objects = objects.filter(o => !o.caught && o.y < H + 30);
+
+      if (lives <= 0) {
+        running = false;
+        message.textContent = `Konec igre! Rezultat: ${score}`;
+        if (score > best) {
+          best = score;
+          localStorage.setItem("zvezdiceBest", best);
+          message.textContent += " — NOV REKORD! 🏆";
+        }
+        startButton.textContent = "🔄 Igraj ponovno";
+      }
+    }
+
+    function loop(timestamp) {
+      if (!running) {
+        drawBackground();
+        drawObjects();
+        drawPlayer();
+        animationId = null;
+        return;
+      }
+
+      const dt = lastTime
+        ? Math.min((timestamp - lastTime) / 1000, 0.04)
+        : 0;
+
+      lastTime = timestamp;
+      update(dt);
+      drawBackground();
+      drawObjects();
+      drawPlayer();
+
+      if (running) {
+        animationId = requestAnimationFrame(loop);
+      } else {
+        drawGameOver();
+        animationId = null;
+      }
+    }
+
+    function drawGameOver() {
+      ctx.fillStyle = "#0009";
+      ctx.fillRect(0, 0, W, H);
+      ctx.textAlign = "center";
+      ctx.fillStyle = "#ffe66d";
+      ctx.font = "bold 36px Arial";
+      ctx.fillText("KONEC IGRE", W / 2, H / 2 - 35);
+      ctx.fillStyle = "white";
+      ctx.font = "23px Arial";
+      ctx.fillText(`Točke: ${score}`, W / 2, H / 2 + 8);
+      ctx.font = "17px Arial";
+      ctx.fillText(`Najboljši rezultat: ${best}`, W / 2, H / 2 + 42);
+    }
+
+    document.addEventListener("keydown", e => {
+      if (["ArrowLeft", "ArrowRight", " "].includes(e.key)) {
+        e.preventDefault();
+      }
+      keys[e.key] = true;
+    });
+
+    document.addEventListener("keyup", e => {
+      keys[e.key] = false;
+    });
+
+    function holdButton(id, key) {
+      const button = document.getElementById(id);
+
+      button.addEventListener("pointerdown", e => {
+        e.preventDefault();
+        keys[key] = true;
+        button.setPointerCapture(e.pointerId);
+      });
+
+      function release() {
+        keys[key] = false;
+      }
+
+      button.addEventListener("pointerup", release);
+      button.addEventListener("pointercancel", release);
+      button.addEventListener("lostpointercapture", release);
+    }
+
+    holdButton("left", "ArrowLeft");
+    holdButton("right", "ArrowRight");
+
+    // Omogoči premikanje s prstom po igralnem polju.
+    canvas.addEventListener("pointermove", e => {
+      if (!running || e.pointerType !== "touch") return;
+      const rect = canvas.getBoundingClientRect();
+      const scale = W / rect.width;
+      player.x = (e.clientX - rect.left) * scale - player.w / 2;
+      player.x = Math.max(0, Math.min(W - player.w, player.x));
+    });
+
+    startButton.addEventListener("click", resetGame);
+
+    // Začetni zaslon
+    player = { x: W / 2 - 28, y: H - 65, w: 56, h: 35, speed: 310 };
+    objects = [];
+    score = 0;
+    lives = 3;
+    running = false;
+    drawBackground();
+    drawPlayer();
+  </script>
+</body>
+</html>

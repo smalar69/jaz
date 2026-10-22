@@ -1,0 +1,281 @@
+
+<!DOCTYPE html>
+<html lang="sl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>OŠ Radlje ob Dravi</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #fff5e8;
+            color: #293447;
+            line-height: 1.7;
+        }
+
+        header {
+            background: linear-gradient(135deg, #f59e0b, #f97316);
+            color: white;
+            text-align: center;
+            padding: 45px 20px;
+        }
+
+        header h1 {
+            font-size: 38px;
+            margin: 10px 0;
+        }
+
+        header p {
+            font-size: 18px;
+            margin: 0;
+        }
+
+        .nazaj {
+            position: absolute;
+            top: 18px;
+            right: 18px;
+        }
+
+        .nazaj img {
+            width: 75px;
+            transition: transform 0.3s;
+        }
+
+        .nazaj img:hover {
+            transform: scale(1.1);
+        }
+
+        nav {
+            background: #26364a;
+            padding: 14px;
+            text-align: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 8px 15px;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        nav a:hover {
+            color: #fbbf24;
+        }
+
+        main {
+            max-width: 1000px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        .kartica {
+            background: white;
+            padding: 28px;
+            margin-bottom: 28px;
+            border-radius: 18px;
+            box-shadow: 0 5px 20px #9a6b3418;
+        }
+
+        h2 {
+            color: #c45b12;
+            margin-top: 0;
+            border-bottom: 3px solid #fed7aa;
+            padding-bottom: 10px;
+        }
+
+        .slika-sole {
+            display: block;
+            width: 100%;
+            max-width: 800px;
+            max-height: 430px;
+            object-fit: contain;
+            margin: 25px auto 0;
+            border-radius: 15px;
+        }
+
+        .video {
+            position: relative;
+            width: 100%;
+            max-width: 750px;
+            margin: 20px auto 0;
+            aspect-ratio: 16 / 9;
+        }
+
+        .video iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+            border-radius: 12px;
+        }
+
+        .gumb {
+            display: inline-block;
+            background: #ea790c;
+            color: white;
+            padding: 13px 22px;
+            border-radius: 9px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 12px;
+            transition: background 0.3s, transform 0.3s;
+        }
+
+        .gumb:hover {
+            background: #bd5108;
+            transform: translateY(-2px);
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        footer {
+            background: #26364a;
+            color: white;
+            text-align: center;
+            padding: 22px;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 29px;
+            }
+
+            .kartica {
+                padding: 20px;
+            }
+
+            .nazaj img {
+                width: 55px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <a class="nazaj" href="indexai.html" title="Nazaj na začetno stran">
+        <img src="gumb-nazaj.png" alt="Gumb nazaj">
+    </a>
+
+    <header>
+        <h1>🏫 OŠ Radlje ob Dravi</h1>
+        <p>Spoznaj mojo šolo!</p>
+    </header>
+
+    <nav>
+        <a href="#opis">O naši šoli</a>
+        <a href="#oprema">Šolski prostori in oprema</a>
+        <a href="#video">Video</a>
+        <a href="#povezava">Uradna spletna stran</a>
+    </nav>
+
+    <main>
+
+        <section class="kartica center">
+            <h2>Dobrodošli na moji šoli!</h2>
+
+            <p>
+                Na tej spletni strani lahko spoznaš
+                Osnovno šolo Radlje ob Dravi in izveš
+                nekaj zanimivosti o njej.
+            </p>
+
+            <img
+                class="slika-sole"
+                src="osradljesola.jpg"
+                alt="Osnovna šola Radlje ob Dravi">
+        </section>
+
+        <section class="kartica" id="opis">
+            <h2>📚 Opis naše šole</h2>
+
+            <p>
+                Osnovna šola Radlje ob Dravi spada med srednje
+                velike osnovne šole v Republiki Sloveniji.
+                Skupaj s podružnicami in vrtcem jo obiskuje
+                več kot 700 otrok iz občine Radlje ob Dravi
+                in okoliških občin. Skupno šola zaposluje
+                več kot 100 oseb.
+            </p>
+        </section>
+
+        <section class="kartica" id="oprema">
+            <h2>💻 Šolski prostori in oprema</h2>
+
+            <p>
+                Osnovna šola Radlje ob Dravi je bila nazadnje
+                dograjena in obnovljena leta 2005. Leta 2010
+                so tik ob šoli zgradili še novo športno dvorano.
+            </p>
+
+            <p>
+                Šola je dobro opremljena s sodobnimi učnimi
+                pripomočki. V 95 % učilnic je montiran digitalni
+                projektor, v polovici teh pa je tudi
+                interaktivna tabla.
+            </p>
+
+            <p>
+                Vsi učitelji in vzgojiteljice imajo za uspešno
+                delo na voljo prenosne računalnike. Šola je že
+                več let povezana z internetom prek hitre
+                optične povezave 100/100 in ima na vseh enotah
+                brezžično omrežje.
+            </p>
+        </section>
+
+        <section class="kartica center" id="video">
+            <h2>🎬 Oglej si video o šoli</h2>
+
+            <p>
+                Oglej si video in izvedi še kaj zanimivega.
+            </p>
+
+            <div class="video">
+                <iframe
+                    src="https://www.youtube.com/embed/6kEmxa0nc9s"
+                    title="Video o OŠ Radlje ob Dravi"
+                    loading="lazy"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin"
+                    allowfullscreen>
+                </iframe>
+            </div>
+        </section>
+
+        <section class="kartica center" id="povezava">
+            <h2>🌐 Obišči uradno spletno stran</h2>
+
+            <p>
+                Za več informacij o šoli obišči njeno uradno
+                spletno stran.
+            </p>
+
+            <a
+                class="gumb"
+                href="https://www.osradlje.si"
+                target="_blank"
+                rel="noopener noreferrer">
+                Obišči spletno stran šole →
+            </a>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>🏫 OŠ Radlje ob Dravi | Moja spletna predstavitev</p>
+    </footer>
+
+</body>
+</html>

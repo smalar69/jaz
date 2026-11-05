@@ -1,0 +1,387 @@
+
+<!DOCTYPE html>
+<html lang="sl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Maskota Petko | OŠ Radlje ob Dravi</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #eaf4ff, #d5f3f5);
+            color: #183153;
+            line-height: 1.7;
+        }
+
+        /* GLAVA */
+
+        header {
+            background: linear-gradient(135deg, #063970, #087e8b, #168aad);
+            color: white;
+            text-align: center;
+            padding: 65px 20px;
+        }
+
+        header h1 {
+            font-size: clamp(35px, 6vw, 55px);
+            margin-bottom: 12px;
+        }
+
+        header p {
+            font-size: 19px;
+        }
+
+        /* NAVIGACIJA */
+
+        nav {
+            background: #05264d;
+            padding: 15px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 10px 15px;
+            font-weight: bold;
+            display: inline-block;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            color: #80ed99;
+        }
+
+        /* GLAVNA VSEBINA */
+
+        main {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .kartica {
+            background: white;
+            padding: 35px;
+            margin-bottom: 30px;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px #00000012;
+            transition: 0.3s;
+        }
+
+        .kartica:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px #00000020;
+        }
+
+        .kartica h2 {
+            color: #087e8b;
+            font-size: 27px;
+            margin-bottom: 18px;
+            text-align: center;
+        }
+
+        .kartica p {
+            font-size: 17px;
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        /* PETKO */
+
+        .petko {
+            text-align: center;
+            background: linear-gradient(135deg, #063970, #168aad);
+            color: white;
+        }
+
+        .petko h2 {
+            color: white;
+        }
+
+        .petko img {
+            width: 100%;
+            max-width: 400px;
+            max-height: 400px;
+            object-fit: contain;
+            border-radius: 20px;
+            margin: 20px auto;
+            display: block;
+        }
+
+        /* ZANIMIVOSTI */
+
+        .zanimivosti {
+            background: #e4f7fa;
+            border-left: 6px solid #087e8b;
+            padding: 22px;
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+
+        .zanimivosti h3 {
+            color: #063970;
+            margin-bottom: 10px;
+        }
+
+        .zanimivosti ul {
+            padding-left: 25px;
+        }
+
+        .zanimivosti li {
+            margin-bottom: 8px;
+        }
+
+        /* GUMBI */
+
+        .gumb {
+            display: inline-block;
+            background: #087e8b;
+            color: white;
+            padding: 13px 24px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 8px;
+            transition: 0.3s;
+        }
+
+        .gumb:hover {
+            background: #063970;
+            transform: scale(1.05);
+        }
+
+        /* NAZAJ */
+
+        .nazaj {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 100;
+            background: white;
+            padding: 8px 13px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px #00000030;
+        }
+
+        .nazaj img {
+            width: 35px;
+            height: 35px;
+            object-fit: contain;
+            display: block;
+        }
+
+        /* NOGA */
+
+        footer {
+            background: #05264d;
+            color: white;
+            text-align: center;
+            padding: 28px 15px;
+            margin-top: 50px;
+        }
+
+        /* TELEFONI */
+
+        @media (max-width: 600px) {
+            header {
+                padding: 65px 15px 45px;
+            }
+
+            .kartica {
+                padding: 22px 17px;
+            }
+
+            .kartica p {
+                font-size: 16px;
+            }
+
+            nav a {
+                margin: 6px;
+                font-size: 14px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+
+            *, *::before, *::after {
+                transition: none !important;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <!-- GUMB NAZAJ -->
+
+    <a class="nazaj" href="index1.html" title="Nazaj na začetno stran">
+        <img src="gumb-nazaj.png" alt="Nazaj">
+    </a>
+
+    <!-- GLAVA -->
+
+    <header>
+        <h1>😎 Maskota Petko</h1>
+        <p>Zaščitni znak Osnovne šole Radlje ob Dravi</p>
+    </header>
+
+    <!-- NAVIGACIJA -->
+
+    <nav>
+        <a href="#predstavitev">O Petku</a>
+        <a href="#zgodovina">Zgodovina</a>
+        <a href="#glasovanje">Glasovanje</a>
+        <a href="#zanimivosti">Zanimivosti</a>
+    </nav>
+
+    <main>
+
+        <!-- PREDSTAVITEV -->
+
+        <section class="kartica petko" id="predstavitev">
+
+            <h2>👋 Spoznaj Petka!</h2>
+
+            <p>
+                Maskota Petko predstavlja učence naše šole
+                ter njihove aktivnosti v šoli in izven nje.
+                Je njihov zaščitni znak, z njo se predstavljajo
+                na tekmovanjih, prireditvah, v medijih in drugod.
+            </p>
+
+            <img src="petko.png" alt="Maskota Petko">
+
+            <p>
+                Petko je posebna maskota Osnovne šole Radlje ob Dravi!
+            </p>
+
+        </section>
+
+        <!-- ZGODOVINA -->
+
+        <section class="kartica" id="zgodovina">
+
+            <h2>📖 Kako je nastal Petko?</h2>
+
+            <p>
+                Maskota šole je nastajala skupaj z novim logotipom,
+                poleti leta 2011.
+            </p>
+
+            <p>
+                Osnovno vodilo pri nastanku nove celostne podobe
+                je bil stari logotip. Novi logotip je stilizirana
+                verzija starega, s čimer pa mu je bila odvzeta
+                vsa igrivost.
+            </p>
+
+            <p>
+                Tako se je porodila ideja, da bi bila maskota
+                naše šole roka, ki je sicer bila sestavni element
+                starega logotipa.
+            </p>
+
+        </section>
+
+        <!-- GLASOVANJE -->
+
+        <section class="kartica" id="glasovanje">
+
+            <h2>🗳️ Kako je Petko dobil ime?</h2>
+
+            <p>
+                Ime maskote so predlagali učenci naše šole.
+                Med vsemi predlogi, ki jih je bilo kar 60,
+                je šolska skupnost izbrala tri najboljše:
+                Učko, Petko in Rupet.
+            </p>
+
+            <p>
+                Na glasovanju, ki je potekalo oktobra leta 2011,
+                je sodelovalo 488 učencev matične šole,
+                podružnične šole Vuhred in podružnične šole Remšnik.
+            </p>
+
+            <div class="zanimivosti">
+                <h3>🏆 Rezultati glasovanja</h3>
+
+                <ul>
+                    <li><strong>Petko:</strong> 222 glasov 🥇</li>
+                    <li><strong>Učko:</strong> 139 glasov 🥈</li>
+                    <li><strong>Rupet:</strong> 104 glasovi 🥉</li>
+                    <li>Neveljavne glasovnice: 23</li>
+                </ul>
+            </div>
+
+        </section>
+
+        <!-- ZANIMIVOSTI -->
+
+        <section class="kartica" id="zanimivosti">
+
+            <h2>⭐ Zanimivosti o Petku</h2>
+
+            <div class="zanimivosti">
+
+                <ul>
+                    <li>Petko je nastal leta 2011.</li>
+
+                    <li>Za ime maskote je bilo kar 60 predlogov.</li>
+
+                    <li>Na glasovanju je sodelovalo 488 učencev.</li>
+
+                    <li>Petko je zmagal z 222 glasovi.</li>
+
+                    <li>Avtor imena Petko je učenec Leon Knuplež.</li>
+                </ul>
+
+            </div>
+
+            <p style="text-align:center; margin-top:25px;">
+                Petko je ponos naše šole! 💙
+            </p>
+
+        </section>
+
+        <!-- GUMB DOMOV -->
+
+        <section style="text-align:center; margin:40px 0;">
+
+            <a href="index1.html" class="gumb">
+                🏠 Nazaj na začetno stran
+            </a>
+
+        </section>
+
+    </main>
+
+    <!-- NOGA -->
+
+    <footer>
+        <p>😎 Maskota Petko | OŠ Radlje ob Dravi</p>
+        <p>Ustvarjeno z ❤️</p>
+    </footer>
+
+</body>
+</html>

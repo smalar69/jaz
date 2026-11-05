@@ -1,0 +1,374 @@
+
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description" content="Moja spletna stran o moji šoli, nogometu in najljubših povezavah.">
+
+    <title>⚽ Moja spletna stran</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #eaf4ff;
+            color: #183153;
+            line-height: 1.7;
+        }
+
+        /* HEADER */
+
+        header {
+            background: linear-gradient(135deg, #063970, #087e8b, #168aad);
+            color: white;
+            text-align: center;
+            padding: 75px 20px;
+        }
+
+        header h1 {
+            font-size: clamp(32px, 5vw, 52px);
+            margin-bottom: 12px;
+        }
+
+        header p {
+            font-size: 19px;
+            opacity: 0.95;
+        }
+
+        /* NAVIGATION */
+
+        nav {
+            background: #05264d;
+            padding: 15px 10px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 12px #00000020;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 7px 13px;
+            font-weight: bold;
+            display: inline-block;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            color: #80ed99;
+            transform: translateY(-2px);
+        }
+
+        /* MAIN */
+
+        main {
+            max-width: 1100px;
+            margin: 45px auto;
+            padding: 0 20px;
+        }
+
+        /* CARDS */
+
+        .kartica {
+            background: white;
+            padding: 35px 25px;
+            margin-bottom: 30px;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px #00000012;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .kartica:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 28px #00000020;
+        }
+
+        .kartica h2 {
+            color: #087e8b;
+            font-size: 27px;
+            margin-bottom: 15px;
+        }
+
+        .kartica p {
+            font-size: 17px;
+            max-width: 750px;
+            margin: 0 auto 15px;
+        }
+
+        /* IMAGES */
+
+        .slika {
+            width: 100%;
+            max-width: 650px;
+            max-height: 400px;
+            object-fit: contain;
+            border-radius: 15px;
+            margin: 20px auto;
+            display: block;
+        }
+
+        /* BUTTONS */
+
+        .gumb {
+            display: inline-block;
+            background: linear-gradient(135deg, #087e8b, #168aad);
+            color: white;
+            padding: 13px 23px;
+            margin: 8px 5px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .gumb:hover {
+            background: #063970;
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px #06397040;
+        }
+
+        /* LINKS SECTION */
+
+        #povezave {
+            background: linear-gradient(135deg, white, #dff3ff);
+        }
+
+        /* MASCOT */
+
+        .maskota {
+            background: linear-gradient(135deg, #05264d, #087e8b);
+            color: white;
+            padding: 35px 20px;
+            border-radius: 20px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .maskota h2 {
+            margin-bottom: 10px;
+        }
+
+        .maskota .gumb {
+            background: #80ed99;
+            color: #05264d;
+        }
+
+        /* FOOTER */
+
+        footer {
+            background: #05264d;
+            color: white;
+            text-align: center;
+            padding: 30px 15px;
+            margin-top: 50px;
+        }
+
+        footer p {
+            font-size: 15px;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 600px) {
+            header {
+                padding: 55px 15px;
+            }
+
+            header p {
+                font-size: 16px;
+            }
+
+            nav {
+                padding: 10px 5px;
+            }
+
+            nav a {
+                margin: 6px;
+                font-size: 14px;
+            }
+
+            main {
+                margin: 25px auto;
+                padding: 0 12px;
+            }
+
+            .kartica {
+                padding: 25px 15px;
+            }
+
+            .kartica h2 {
+                font-size: 23px;
+            }
+
+            .gumb {
+                padding: 12px 16px;
+                font-size: 14px;
+            }
+        }
+
+        /* ACCESSIBILITY */
+
+        a:focus-visible {
+            outline: 3px solid #80ed99;
+            outline-offset: 4px;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+
+            *, *::before, *::after {
+                transition: none !important;
+                animation: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+
+    <header>
+        <h1>⚽ Moja spletna stran ⚽</h1>
+        <p>Moja šola, moj hobi in moj nogometni klub</p>
+    </header>
+
+    <!-- NAVIGATION -->
+
+    <nav>
+        <a href="#sola">🏫 Moja šola</a>
+        <a href="#nogomet">⚽ Moj hobi</a>
+        <a href="#povezave">🌐 Povezave</a>
+        <a href="igriceai.html">🎮 Igrice</a>
+        <a href="petko.html">😎 Maskota</a>
+    </nav>
+
+    <main>
+
+        <!-- SCHOOL -->
+
+        <section class="kartica" id="sola">
+
+            <h2>🏫 Moja šola</h2>
+
+            <p>
+                Šola je pa tak fajn! Vsak dan grem v šolo.
+                Nikoli ne špricam, ker je šola ful fajn!
+            </p>
+
+            <img
+                class="slika"
+                src="osradlje.jpg"
+                alt="Osnovna šola Radlje"
+                loading="lazy"
+            >
+
+            <a class="gumb"
+               href="https://www.osradlje.si"
+               target="_blank"
+               rel="noopener noreferrer">
+                🌐 Obišči spletno stran šole
+            </a>
+
+            <a class="gumb" href="osradljeai.html">
+                📚 Več o moji šoli
+            </a>
+
+        </section>
+
+        <!-- FOOTBALL -->
+
+        <section class="kartica" id="nogomet">
+
+            <h2>⚽ Moj hobi je nogomet</h2>
+
+            <p>
+                Zelo rad treniram nogomet pri nogometnem
+                klubu Dravograd. Nogomet je moj najljubši hobi!
+            </p>
+
+            <img
+                class="slika"
+                src="nkdravograd.png"
+                alt="Nogometni klub Dravograd"
+                loading="lazy"
+            >
+
+            <a class="gumb"
+               href="https://nkdravograd.com/"
+               target="_blank"
+               rel="noopener noreferrer">
+                ⚽ Obišči spletno stran kluba
+            </a>
+
+            <a class="gumb" href="nkdravogradai.html">
+                🏆 Več o mojem klubu
+            </a>
+
+        </section>
+
+        <!-- LINKS -->
+
+        <section class="kartica" id="povezave">
+
+            <h2>🌐 Moje povezave</h2>
+
+            <p>Tukaj najdeš še nekaj zanimivih strani:</p>
+
+            <a class="gumb" href="igriceai.html">
+                🎮 Igrice
+            </a>
+
+            <a class="gumb" href="nkdravogradai.html">
+                ⚽ Moj klub
+            </a>
+
+            <a class="gumb" href="osradljeai.html">
+                📚 Moja šola
+            </a>
+
+        </section>
+
+        <!-- MASCOT -->
+
+        <section class="maskota">
+
+            <h2>😎 Spoznaj našo maskoto!</h2>
+
+            <p>
+                Tukaj lahko spoznaš našo posebno maskoto!
+            </p>
+
+            <a class="gumb" href="petko.html">
+                😎 Poglej maskoto
+            </a>
+
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+
+    <footer>
+        <p>⚽ Moja spletna stran | Šola in nogomet</p>
+        <p>Ustvarjeno z ❤️</p>
+    </footer>
+
+</body>
+</html>
